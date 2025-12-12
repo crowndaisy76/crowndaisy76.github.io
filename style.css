@@ -1,0 +1,111 @@
+/* 글로벌 및 리셋 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 헤더 및 네비게이션 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav a {
+    color: #555;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+}
+
+/* 메인 콘텐츠 영역 */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 5%;
+}
+
+/* 히어로 섹션 */
+.hero {
+    text-align: center;
+    padding: 80px 0;
+    margin-bottom: 40px;
+}
+
+.hero h1 {
+    font-size: 2.5rem; /* 모바일 크기 */
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+/* 카드 섹션 (CSS Grid를 이용한 반응형) */
+.card-section {
+    display: grid;
+    /* 기본: 모바일에서는 1열 */
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 20px 0;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 30px;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.card h2 {
+    color: #333;
+    margin-top: 0;
+}
+
+/* 푸터 */
+.footer {
+    text-align: center;
+    padding: 20px 5%;
+    border-top: 1px solid #eee;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* 미디어 쿼리 (반응형 설정) */
+
+/* 태블릿 크기 이상 (768px) */
+@media (min-width: 768px) {
+    .hero h1 {
+        font-size: 3.5rem; /* 데스크탑 크기 */
+    }
+    .card-section {
+        /* 태블릿: 2열 */
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 데스크탑 크기 이상 (1024px) */
+@media (min-width: 1024px) {
+    .card-section {
+        /* 데스크탑: 3열 */
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
