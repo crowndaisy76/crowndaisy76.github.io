@@ -4,15 +4,22 @@
     <meta charset="UTF-8">
     <title>한희수 - 메인</title>
     <style>
-        body { text-align: center; padding-top: 20vh; font-family: sans-serif; background: #f8f9fa; }
-        .btn { display: inline-block; padding: 15px 30px; margin: 10px; background: #2c3e50; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        .btn:hover { background: #34495e; }
+        body { font-family: 'Pretendard', sans-serif; background: #f8f9fa; text-align: center; padding-top: 15vh; margin: 0; }
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 { color: #2c3e50; font-size: 2.5rem; }
+        .btn-group { margin-top: 50px; display: flex; justify-content: center; gap: 20px; }
+        .btn { padding: 20px 40px; background: #2c3e50; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+        .btn:hover { background: #34495e; transform: translateY(-3px); }
     </style>
 </head>
 <body>
-    <h1>한희수 (Han Heesoo)</h1>
-    <p>CTI Analyst 및 Threat Hunter</p>
-    <a href="portfolio.html" class="btn">포트폴리오 보기</a>
-    <a href="blog.html" class="btn">기술 블로그 보기</a>
+    <div class="container">
+        <h1>한희수 (Han Heesoo)</h1>
+        <p>CTI Analyst 및 Threat Hunter</p>
+        <div class="btn-group">
+            <a href="portfolio.html" class="btn">포트폴리오</a>
+            <a href="blog.html" class="btn">기술 블로그</a>
+        </div>
+    </div>
 </body>
 </html>
