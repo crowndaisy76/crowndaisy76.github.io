@@ -2,9 +2,10 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>한희수 - 포트폴리오</title>
     <style>
-        :root { --primary: #2c3e50; --bg: #f8f9fa; }
+        :root { --primary: #2c3e50; --secondary: #34495e; --bg: #f8f9fa; }
         body { font-family: 'Pretendard', sans-serif; line-height: 1.6; color: #333; background: var(--bg); margin: 0; padding: 0; }
         header { background: var(--primary); color: white; padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
         nav.main-nav { display: flex; justify-content: center; gap: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
@@ -13,15 +14,30 @@
         nav.sub-nav a, nav.sub-nav button { color: #bdc3c7; text-decoration: none; font-size: 0.9rem; cursor: pointer; background: none; border: none; }
         nav.sub-nav a.active { color: white; font-weight: bold; }
         .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-        .section { display: none; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .section { display: none; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 2rem; }
         .section.active { display: block; }
-        h1, h2 { color: var(--primary); }
-        .card { border: 1px solid #ddd; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; cursor: pointer; }
-        .card:hover { border-color: var(--primary); }
-        .clickable { color: #2980b9; cursor: pointer; text-decoration: underline; }
+        h1, h2, h3 { color: var(--primary); }
+        .clickable { cursor: pointer; color: #2980b9; text-decoration: underline; }
+        .card { border: 1px solid #ddd; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; cursor: pointer; transition: 0.2s; }
+        .card:hover { border-color: var(--primary); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 2rem; border-radius: 8px; max-width: 800px; width: 90%; height: 85vh; display: flex; flex-direction: column; }
+        .close-btn { align-self: flex-end; cursor: pointer; font-size: 1.5rem; font-weight: bold; border: none; background: none; margin-bottom: 1rem; }
+        #modalBody { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+        #modalBody h2 { margin-top: 0; }
+        iframe { width: 100%; flex-grow: 1; border: 1px solid #ddd; border-radius: 4px; }
+
+        @media print {
+            header, .modal { display: none !important; }
+            body { background: white; }
+            .section { display: block; box-shadow: none; border: none; page-break-inside: avoid; }
+        }
     </style>
 </head>
 <body>
+
 <header>
     <nav class="main-nav">
         <a href="index.html">홈</a>
@@ -38,35 +54,116 @@
 <div class="container">
     <div id="home" class="section active">
         <h1>한희수 (Han Heesoo)</h1>
-        <p>세종대학교 정보보호학과 졸업 후 CTI Analyst 및 Threat Hunter로 활동 중입니다.</p>
+        <p><strong>CTI Analyst 및 Threat Hunter</strong></p>
+        <p>세종대학교 정보보호학과를 졸업했으며, 디지털 포렌식과 악성코드 분석에 관심을 두고 있습니다. 시스템 아티팩트 분석과 침해사고 대응 기술을 연구합니다.</p>
+        
         <hr>
-        <h2>주요 연구</h2>
+        <h2>경력 및 경험</h2>
         <ul>
-            <li class="clickable" onclick="alert('PDF를 열람하시려면 루트의 paper 폴더를 확인해주세요.')">TraceChain : 블록체인 기반 믹싱 탐지 시스템 (CISC-S_25)</li>
-            <li class="clickable">경계 기반 망 분리와 제로 트러스트 N2SF 비교 연구 (ACK 2025)</li>
+            <li>[토스뱅크] 사이버보안 엔지니어 부트캠프 1기</li>
+            <li>빡공팟 15기 악성코드 분석</li>
+        </ul>
+
+        <hr>
+        <h2>논문 및 연구 (클릭하여 상세 보기)</h2>
+        <ul>
+            <li><span class="clickable" onclick="openModal('iot')">사물인터넷 기반 해양 침적 쓰레기 관리 시스템 (ASK 2023)</span></li>
+            <li><span class="clickable" onclick="openModal('tracechain')">TraceChain : 블록체인 기반 믹싱 탐지 시스템 (CISC-S_25)</span></li>
+            <li><span class="clickable" onclick="openModal('n2sf')">경계 기반 망 분리와 제로 트러스트 N2SF의 비교 연구 (ACK 2025) - <strong>[은상]</strong></span></li>
+            <li><span class="clickable" onclick="openModal('mad')">MITRE ATT&CK-D3FEND 지식 그래프 기반의 위협 대응 우선순위 모델 (CISC-W_25) - <strong>[우수논문상]</strong></span></li>
         </ul>
     </div>
 
     <div id="projects" class="section">
         <h2>수행 프로젝트</h2>
-        <div class="card">
-            <h3>FACT Engine</h3>
-            <p>Rust 기반 고성능 윈도우 아티팩트 카빙 엔진</p>
+        
+        <div class="card" onclick="openModal('fact')">
+            <h3>FACT (Forensic Artifact Carving & Triage) Engine</h3>
+            <p>Rust 기반의 고성능 윈도우 아티팩트 카빙 엔진 개발 (클릭하여 상세 보기)</p>
         </div>
-        <div class="card">
-            <h3>K8s Forensic</h3>
-            <p>eBPF 기반 Kubernetes 위협 탐지 시스템</p>
+
+        <div class="card" onclick="openModal('k8s')">
+            <h3>Kubernetes Forensic Project</h3>
+            <p>eBPF 기반 K8s 환경 위협 탐지 및 분석 (클릭하여 상세 보기)</p>
         </div>
     </div>
 </div>
 
+<div id="modalOverlay" class="modal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <button class="close-btn" onclick="closeModal(null, true)">&times;</button>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
 <script>
+    const details = {
+        mad: {
+            title: "MITRE ATT&CK-D3FEND 지식 그래프 기반의 위협 대응 우선순위 모델",
+            type: "pdf",
+            pdfUrl: "./paper/MAD.pdf", 
+            content: "MITRE ATT&CK 프레임워크와 D3FEND를 매핑하여, 조직 환경에 맞는 방어 기법을 우선순위화하고 스코어링하는 로직을 연구함."
+        },
+        iot: {
+            title: "사물인터넷 기반 해양 침적 쓰레기 관리 시스템",
+            type: "pdf",
+            pdfUrl: "./paper/IoT.pdf", 
+            content: "사물인터넷(IoT) 기술을 활용하여 해양 침적 쓰레기를 효율적으로 모니터링하고 관리하는 시스템을 제안함."
+        },
+        n2sf: {
+            title: "경계 기반 망 분리와 제로 트러스트 N2SF의 비교 연구",
+            type: "pdf",
+            pdfUrl: "./paper/N2SF.pdf", 
+            content: "기존 경계 기반 망 분리 모델과 제로 트러스트 기반의 국가 망 보안 체계(N2SF) 아키텍처의 보안성 및 구조적 효율성을 비교 분석함."
+        },
+        tracechain: {
+            title: "TraceChain : 블록체인 기반 믹싱 탐지 시스템",
+            type: "pdf",
+            pdfUrl: "./paper/TraceChain.pdf", 
+            content: "블록체인 네트워크 상에서 발생하는 암호화폐 믹싱(Mixing) 행위를 탐지하고 추적하기 위한 시스템을 제안함."
+        },
+        fact: {
+            title: "FACT Engine 개발",
+            type: "text",
+            content: "Rust를 활용하여 Windows API를 우회하고 Low-level에서 데이터를 복구 및 수집하는 포렌식 도구임. MFT, Registry, EVTX 등 주요 아티팩트를 고속으로 파싱하여 침해사고 대응(IR) 시 신속한 트리아지를 지원함."
+        },
+        k8s: {
+            title: "Kubernetes Forensic Project",
+            type: "text",
+            content: "공급망 공격 및 측면 이동(Lateral Movement) 탐지를 목표로 한 프로젝트임. Tetragon, Cilium, Hubble 등 eBPF 기술을 활용해 실시간 모니터링을 수행하고, 수집된 대규모 텔레메트리 로그를 OpenSearch와 ClickHouse로 처리해 공격 타임라인을 재구성함."
+        }
+    };
+
     function showSection(id) {
         document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
         document.querySelectorAll('.sub-nav a').forEach(a => a.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('nav-' + id).classList.add('active');
     }
+
+    function openModal(id) {
+        const modal = document.getElementById('modalOverlay');
+        const body = document.getElementById('modalBody');
+        const data = details[id];
+
+        if (data.type === 'pdf') {
+            body.innerHTML = `<h2>${data.title}</h2>
+                              <p>${data.content}</p>
+                              <iframe src="${data.pdfUrl}#toolbar=0" title="${data.title}"></iframe>`;
+        } else {
+            body.innerHTML = `<h2>${data.title}</h2><p>${data.content}</p>`;
+        }
+        
+        modal.style.display = 'flex';
+    }
+
+    function closeModal(e, force = false) {
+        if (force || e.target === document.getElementById('modalOverlay')) {
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.getElementById('modalBody').innerHTML = ''; 
+        }
+    }
 </script>
+
 </body>
 </html>
