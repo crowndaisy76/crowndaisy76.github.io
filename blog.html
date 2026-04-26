@@ -5,16 +5,17 @@ layout: null
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>기술 블로그 - 한희수</title>
+    <title>한희수 - 기술 블로그</title>
     <style>
-        body { font-family: 'Pretendard', sans-serif; background: #f8f9fa; color: #333; margin: 0; }
-        header { background: #2c3e50; color: white; padding: 1.5rem; text-align: center; }
-        header a { color: white; text-decoration: none; margin-right: 20px; font-weight: bold; }
-        .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-        .post-card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 1.5rem; cursor: pointer; border: 1px solid #ddd; }
+        body { font-family: 'Pretendard', sans-serif; background: #f8f9fa; margin: 0; padding: 0; }
+        header { background: #2c3e50; color: white; padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: center; gap: 2rem; }
+        nav a { color: white; text-decoration: none; font-weight: bold; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .post-card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 1rem; cursor: pointer; border: 1px solid #ddd; }
         .post-card:hover { border-color: #2c3e50; }
-        .post-card h2 { margin-top: 0; color: #2c3e50; }
-        .date { font-size: 0.9rem; color: #888; }
+        h2 { margin: 0; color: #2c3e50; }
+        .date { color: #888; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -22,6 +23,7 @@ layout: null
     <nav>
         <a href="index.html">홈</a>
         <a href="portfolio.html">포트폴리오</a>
+        <a href="blog.html">기술 블로그</a>
     </nav>
 </header>
 <div class="container">
@@ -29,7 +31,6 @@ layout: null
     {% for post in site.posts %}
     <div class="post-card" onclick="location.href='{{ post.url }}'">
         <h2>{{ post.title }}</h2>
-        <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
         <div class="date">{{ post.date | date: "%Y-%m-%d" }}</div>
     </div>
     {% endfor %}

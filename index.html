@@ -2,24 +2,29 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>한희수 - 메인</title>
+    <title>한희수 - 홈</title>
     <style>
-        body { font-family: 'Pretendard', sans-serif; background: #f8f9fa; text-align: center; padding-top: 15vh; margin: 0; }
-        .container { max-width: 600px; margin: 0 auto; }
+        body { font-family: 'Pretendard', sans-serif; background: #f8f9fa; margin: 0; padding: 0; text-align: center; }
+        header { background: #2c3e50; color: white; padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: center; gap: 2rem; }
+        nav a { color: white; text-decoration: none; font-weight: bold; }
+        .hero { padding-top: 15vh; max-width: 600px; margin: 0 auto; }
         h1 { color: #2c3e50; font-size: 2.5rem; }
-        .btn-group { margin-top: 50px; display: flex; justify-content: center; gap: 20px; }
-        .btn { padding: 20px 40px; background: #2c3e50; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: 0.3s; }
-        .btn:hover { background: #34495e; transform: translateY(-3px); }
+        p { color: #666; font-size: 1.2rem; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>한희수 (Han Heesoo)</h1>
-        <p>CTI Analyst 및 Threat Hunter</p>
-        <div class="btn-group">
-            <a href="portfolio.html" class="btn">포트폴리오</a>
-            <a href="blog.html" class="btn">기술 블로그</a>
-        </div>
-    </div>
+<header>
+    <nav>
+        <a href="index.html">홈</a>
+        <a href="portfolio.html">포트폴리오</a>
+        <a href="blog.html">기술 블로그</a>
+    </nav>
+</header>
+<div class="hero">
+    <h1>한희수 (Han Heesoo)</h1>
+    <p>CTI Analyst 및 Threat Hunter</p>
+    <p>디지털 포렌식과 악성코드 분석을 통해 보안 위협을 추적합니다.</p>
+</div>
 </body>
 </html>
