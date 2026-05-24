@@ -61,9 +61,9 @@ UNC6671은 보안 도구의 탐지를 피하고자 사내 직원의 개인 휴�
   * **Google Workspace:** '비밀번호 알림(Password Alert)' 기능을 활성화하여 사내 패스워드 해시 값이 승인되지 않은 도메인에 입력되는지 모니터링한다.
   * **Microsoft 환경:** 'Microsoft Defender 자격 증명 보호' 및 'SmartScreen'을 활용해 평판이 낮거나 피싱으로 의심되는 사이트에서의 자격 증명 제출을 가로챈다. 사용자 실수로 악성 페이지와 상호작용하더라도 자동 패스워드 초기화나 보안 알림이 트리거되도록 안전장치를 마련한다.
 
-## **2. ID 관리자({% include wiki_link.html text="IdP" url="/review/Detailed/IdP" %}) 및 인프라 로그 감시**
+## **2. ID 관리자(IdP) 및 인프라 로그 감시**
 
-* **IdP 로그 모니터링**
+* **{% include wiki_link.html text="IdP" url="/review/Detailed/IdP" %} 로그 모니터링**
   * 공격자가 침투 후 권한 유지를 위해 새로운 기기를 등록하는 행위를 추적해야 한다.
   * IdP 로그를 분석하여, 2차 인증 실패(`user.authentication.auth_via_mfa failures`) 또는 인증 포기(`Abandoned challenges`) 이벤트가 발생한 직후 **새로운 MFA 수단이 등록(`system.multifactor.factor.setup`)되는 이상 흐름**을 탐지한다.
 
