@@ -31,21 +31,24 @@ UNC6671은 보안 도구의 탐지를 피하고자 사내 직원의 개인 휴�
 * Vishing - [T1566.004](https://attack.mitre.org/techniques/T1566/004/)
 * Impersonation - [T1684.001](https://attack.mitre.org/techniques/T1684/001/)
 
-* **Credential Access & Defense Evasion**
+**Credential Access & Defense Evasion**
 * Adversary-in-the-Middle - [T1557](https://attack.mitre.org/techniques/T1557/)
 * Masquerading - [T1036](https://attack.mitre.org/techniques/T1036/)
 
-* **Persistence**
+**Persistence**
 * Account Manipulation: Device Registration - [T1098.005](https://attack.mitre.org/techniques/T1098/005/)
 * Valid Accounts: Cloud Accounts - [T1078.004](https://attack.mitre.org/techniques/T1078/004/)
 
-* **Collection**
+**Collection**
 * Data from Information Repositories: SharePoint - [T1213.002](https://attack.mitre.org/techniques/T1213/002/)
 
-* **Exfiltration**
+**Exfiltration**
 * Automated Exfiltration - [T1020](https://attack.mitre.org/techniques/T1020/)
 
-* **Impact**
+**Impact**
 * Financial Theft - [T1657](https://attack.mitre.org/techniques/T1657/)
 
 # [Defense Strategies]
+
+# [Referenced]
+* Google Threat Intelligence Group(https://cloud.google.com/blog/topics/threat-intelligence/blackfile-vishing-extortion-operation/?hl=en)
