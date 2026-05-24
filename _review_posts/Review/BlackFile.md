@@ -8,7 +8,7 @@ date: 2026-05-24
 본 사건은 위협 그룹 UNC6671이 Vishing과 AiTM 기법을 악용하여 기업의 SSO 계정을 탈취하고, 클라우드 데이터를 유출하여 금전을 갈취한 침해 사고이다. 사회공학적 기법으로 초기 침투에 성공한 뒤, 자동화 스크립트로 데이터를 선별 확보하고 BlackFile DLS에 게시하여 협박하는 공격 방식이 핵심이다.
 # [Technical Analysis]
 ## 1. Initial Access & Credential Access
-UNC6671은 보안 도구의 탐지를 피하고자 사내 직원의 개인 휴대전화로 직접 전화를 거는 Vishing 기법을 사용했다. 이들은 사내 IT 헬프데스크로 위장하여 '패스키(Passkey) 마이그레이션'이나 'MFA 업데이트'가 필요하다는 명분으로 타깃을 속였다. 과거에는 조직 맞춤형 도메인을 썼으나, 최근에는 Tucows에 등록된 서브도메인(예: enrollms, passkeyms) 기반 모델로 전환하여 신뢰도를 높였다.
+UNC6671은 보안 도구의 탐지를 피하고자 사내 직원의 개인 휴대전화로 직접 전화를 거는 {% include wiki_link.html text="Vishing" url="/review/Detailed/Vishing" %} 기법을 사용했다. 이들은 사내 IT 헬프데스크로 위장하여 '패스키(Passkey) 마이그레이션'이나 'MFA 업데이트'가 필요하다는 명분으로 타깃을 속였다. 과거에는 조직 맞춤형 도메인을 썼으나, 최근에는 Tucows에 등록된 서브도메인(예: enrollms, passkeyms) 기반 모델로 전환하여 신뢰도를 높였다.
 
 이러한 Vishing 통화는 실시간 중간자 공격(AiTM, Adversary-in-the-Middle)과 동기화되어 진행된다. 직원이 사내 시스템과 유사한 위장 SSO 페이지에 자격 증명을 입력하면, 공격자는 이를 정식 SSO로 즉각 릴레이한다. 이후 시스템이 2차 인증(MFA)을 요구할 때, 직원이 이를 정상적인 보안 업데이트 과정으로 오인하여 인증을 승인하도록 유도함으로써 기존의 MFA 방어망을 무력화한다.
 
@@ -49,8 +49,6 @@ UNC6671은 보안 도구의 탐지를 피하고자 사내 직원의 개인 휴�
 * Financial Theft - [T1657](https://attack.mitre.org/techniques/T1657/)
 
 # [Defense Strategies]
-
-
 
 # [Referenced]
 * [Google Threat Intelligence Group](https://cloud.google.com/blog/topics/threat-intelligence/blackfile-vishing-extortion-operation/?hl=en)
