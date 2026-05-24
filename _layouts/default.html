@@ -13,10 +13,22 @@
         code { background: #eee; padding: 2px 4px; border-radius: 4px; }
         pre { background: #2c3e50; color: white; padding: 1rem; border-radius: 8px; overflow-x: auto; }
         
-        /* Wiki-Link 툴팁 스타일 */
+        /* [1] 일반 외부 하이퍼링크 스타일 (Wiki-Link 제외) */
+        .container a:not(.wiki-link-text) {
+            color: #e67e22;
+            text-decoration: none;
+            border-bottom: 1px solid #e67e22;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .container a:not(.wiki-link-text):hover {
+            color: #d35400;
+            border-bottom-color: #d35400;
+        }
+
+        /* [2] Wiki-Link 툴팁 스타일 */
         .wiki-link-wrapper { position: relative; display: inline-block; }
-        .wiki-link-text { color: #005bb5; text-decoration: none; font-weight: bold; border-bottom: 1px dashed #005bb5; padding: 0 2px; cursor: pointer; }
-        .wiki-link-text:hover { color: #003a75; border-bottom-style: solid; }
+        .wiki-link-text { color: #005bb5 !important; text-decoration: none !important; font-weight: bold; border-bottom: 1px dashed #005bb5 !important; padding: 0 2px; cursor: pointer; }
+        .wiki-link-text:hover { color: #003a75 !important; border-bottom-style: solid !important; }
         .wiki-preview {
             display: none; position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
             width: max-content; max-width: 250px; padding: 8px 12px; background: #2c3e50; color: #fff;
@@ -37,7 +49,6 @@
             box-sizing: border-box; overflow-y: auto;
         }
         .wiki-drawer.open { transform: translateX(0); }
-        /* 드래그 크기 조절 중일 때는 트랜지션을 꺼야 마우스를 실시간으로 부드럽게 따라옴 */
         .wiki-drawer.resizing { transition: none; }
         
         /* 드래그 크기 조절 바 (Resizer) */
@@ -57,7 +68,7 @@
         .wiki-drawer-content { margin-top: 1rem; }
         .wiki-drawer-content h1, .wiki-drawer-content h2 { border-bottom: 1px solid #ddd; padding-bottom: 8px; }
         
-        /* 뒷배경 어둡게 블러 처리 (Overlay) */
+        /* 뒷배경 오버레이 */
         .drawer-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.4); display: none; z-index: 1999;
@@ -90,7 +101,7 @@
 
 <script>
 function openWikiDrawer(event, element) {
-    event.preventDefault(); // 페이지 이동 차단
+    event.preventDefault(); 
     let url = element.getAttribute('href');
     
     if (url.endsWith('.md')) {
@@ -122,10 +133,11 @@ function openWikiDrawer(event, element) {
             } else {
                 contentDiv.innerHTML = html; 
             }
+            // 슬라이드 내부에 로드된 일반 링크들도 새 탭 처리를 위해 재검사
+            applyExternalLinks();
         })
         .catch(error => {
-            contentDiv.innerHTML = `<p style="color:#d9534f; font-weight:bold;">오류: ${error.message}</p>
-                                    <p style="font-size:0.9rem; color:#777;">Detailed 폴더 내 파일 상단에 Front Matter(---) 설정이 빠졌거나 경로가 잘못되었는지 확인바람.</p>`;
+            contentDiv.innerHTML = `<p style="color:#d9534f; font-weight:bold;">오류: ${error.message}</p>`;
         });
 }
 
@@ -134,23 +146,32 @@ function closeWikiDrawer() {
     document.getElementById('drawerOverlay').classList.remove('open');
 }
 
-// --- 드래그 크기 조절(Resize) 구현부 ---
+// --- 외부 하이퍼링크 새 탭 열기 자동화 로직 ---
+function applyExternalLinks() {
+    document.querySelectorAll('.container a:not(.wiki-link-text)').forEach(link => {
+        if (link.hostname !== window.location.hostname && link.hostname !== '') {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+        }
+    });
+}
+
+// 문서 로드 완료 시 1회 실행
+document.addEventListener("DOMContentLoaded", applyExternalLinks);
+
+// --- 드래그 크기 조절(Resize) ---
 const drawer = document.getElementById('wikiDrawer');
 const resizer = document.getElementById('drawerResizer');
 
 resizer.addEventListener('mousedown', function(e) {
     e.preventDefault();
-    drawer.classList.add('resizing'); // 실시간 반영을 위해 트랜지션 클래스 제거
-    
+    drawer.classList.add('resizing');
     window.addEventListener('mousemove', resizeDrawer);
     window.addEventListener('mouseup', stopResizeDrawer);
 });
 
 function resizeDrawer(e) {
-    // 화면 우측 끝에서 마우스 커서까지의 거리를 계산하여 너비로 설정
     let newWidth = window.innerWidth - e.clientX;
-    
-    // 최소 350px, 최대 전체 화면의 85% 까지만 늘어나도록 마지노선 설정
     if (newWidth > 350 && newWidth < window.innerWidth * 0.85) {
         drawer.style.width = newWidth + 'px';
     }
