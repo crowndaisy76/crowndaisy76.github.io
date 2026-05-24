@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>{{ page.title }} - 한희수</title>
     <style>
-        body { font-family: 'Pretendard', sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; margin: 0; padding: 0; }
+        body { font-family: 'Pretendard', sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; margin: 0; padding: 0; overflow-x: hidden; }
         header { background: #2c3e50; color: white; padding: 1rem 0; text-align: center; position: sticky; top: 0; z-index: 1000; }
         nav { display: flex; justify-content: center; gap: 2rem; }
         nav a { color: white; text-decoration: none; font-weight: bold; }
@@ -13,9 +13,9 @@
         code { background: #eee; padding: 2px 4px; border-radius: 4px; }
         pre { background: #2c3e50; color: white; padding: 1rem; border-radius: 8px; overflow-x: auto; }
         
-        /* Wiki-Link 전용 스타일 */
+        /* Wiki-Link 툴팁 스타일 */
         .wiki-link-wrapper { position: relative; display: inline-block; }
-        .wiki-link-text { color: #005bb5; text-decoration: none; font-weight: bold; border-bottom: 1px dashed #005bb5; padding: 0 2px; }
+        .wiki-link-text { color: #005bb5; text-decoration: none; font-weight: bold; border-bottom: 1px dashed #005bb5; padding: 0 2px; cursor: pointer; }
         .wiki-link-text:hover { color: #003a75; border-bottom-style: solid; }
         .wiki-preview {
             display: none; position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
@@ -27,6 +27,30 @@
             border-width: 5px; border-style: solid; border-color: #2c3e50 transparent transparent transparent;
         }
         .wiki-link-wrapper:hover .wiki-preview { display: block; }
+
+        /* 우측 슬라이드 창 (Drawer) 스타일 */
+        .wiki-drawer {
+            position: fixed; top: 0; right: -550px; width: 500px; height: 100%;
+            background: white; box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+            transition: right 0.3s ease-in-out; z-index: 2000; padding: 2.5rem 2rem;
+            box-sizing: border-box; overflow-y: auto;
+        }
+        .wiki-drawer.open { right: 0; }
+        .wiki-drawer-close {
+            position: absolute; top: 1rem; right: 1rem; background: none; border: none;
+            font-size: 1.8rem; cursor: pointer; color: #aaa; transition: 0.2s;
+        }
+        .wiki-drawer-close:hover { color: #333; }
+        .wiki-drawer-content { margin-top: 1rem; }
+        .wiki-drawer-content h1, .wiki-drawer-content h2 { border-bottom: 1px solid #ddd; padding-bottom: 8px; }
+        
+        /* 뒷배경 어둡게 블러 처리 (Overlay) */
+        .drawer-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); display: none; z-index: 1999;
+            backdrop-filter: blur(2px);
+        }
+        .drawer-overlay.open { display: block; }
     </style>
 </head>
 <body>
@@ -41,5 +65,63 @@
 <div class="container">
     {{ content }}
 </div>
+
+<div id="drawerOverlay" class="drawer-overlay" onclick="closeWikiDrawer()"></div>
+<div id="wikiDrawer" class="wiki-drawer">
+    <button class="wiki-drawer-close" onclick="closeWikiDrawer()">&times;</button>
+    <div id="drawerContent" class="wiki-drawer-content">
+        <p>문서를 불러오는 중입니다...</p>
+    </div>
+</div>
+
+<script>
+function openWikiDrawer(event, element) {
+    event.preventDefault(); // 페이지 이동 차단
+    let url = element.getAttribute('href');
+    
+    // 만약 URL 끝에 .md나 .md/가 붙어있다면 자동으로 깔끔하게 제거
+    if (url.endsWith('.md')) {
+        url = url.slice(0, -3);
+    } else if (url.endsWith('.md/')) {
+        url = url.slice(0, -4);
+    }
+    
+    const drawer = document.getElementById('wikiDrawer');
+    const overlay = document.getElementById('drawerOverlay');
+    const contentDiv = document.getElementById('drawerContent');
+    
+    contentDiv.innerHTML = '<p style="color: #666;">문서를 불러오는 중입니다...</p>';
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    
+    // 비동기(Fetch)로 Detailed 페이지 데이터 요청
+    fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error('상세 개념 문서(HTML)를 찾을 수 없습니다.');
+            return response.text();
+        })
+        .then(html => {
+            // 읽어온 페이지 전체 내용 중 본문 컴포넌트(.container) 내부만 파싱하여 주입
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const targetContent = doc.querySelector('.container');
+            
+            if (targetContent) {
+                contentDiv.innerHTML = targetContent.innerHTML;
+            } else {
+                contentDiv.innerHTML = html; 
+            }
+        })
+        .catch(error => {
+            contentDiv.innerHTML = `<p style="color:#d9534f; font-weight:bold;">오류: ${error.message}</p>
+                                    <p style="font-size:0.9rem; color:#777;">Detailed 폴더 내 파일 상단에 Front Matter(---) 설정이 빠졌거나 경로가 잘못되었는지 확인바람.</p>`;
+        });
+}
+
+function closeWikiDrawer() {
+    document.getElementById('wikiDrawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+}
+</script>
 </body>
 </html>
