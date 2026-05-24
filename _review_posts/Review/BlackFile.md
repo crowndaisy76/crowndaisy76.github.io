@@ -19,34 +19,34 @@ UNC6671은 보안 도구의 탐지를 피하고자 사내 직원의 개인 휴�
 
 이 과정에서 정교한 탐지 우회 기법이 관찰되었다.
 
-- 로그 우회: 직접 다운로드(Download) 명령 대신 단순 웹 조회(Fetch)로 위장하여, SOC 환경에서 위험도가 낮게 평가되는 FileAccessed 이벤트로 로그를 남겼다.
+- 로그 우회: 직접 다운로드 명령 대신 단순 웹 조회(Fetch)로 위장하여, SOC 환경에서 위험도가 낮게 평가되는 FileAccessed 이벤트로 로그를 남겼다.
 
 - ClientAppId 위장: 조건부 접근 제어를 우회하기 위해 접속 앱 식별자를 'Microsoft Office'로 위장했다. 하지만 {% include wiki_link.html text="Microsoft 365 UAL(Unified Audit Log)" url="/review/Detailed/M365_UAL" %} 분석 결과, 앱 이름과 달리 실제 UserAgent는 python-requests/2.28.1로 남는 등 스크립팅 엔진을 사용한 흔적(Mismatch)이 식별되었다.
 
 ## 3. Extortion
-데이터 확보를 마친 공격자는 탈취한 정보를 BlackFile DLS(Data Leak Site)에 게시하겠다고 협박한다. 초기 랜섬 노트는 자동 생성된 일반 Gmail 계정을 통해 발송되며, 내부에는 협박 협상을 위한 익명 메신저(Tox 또는 Session) ID가 포함되어 있다. 만약 피해자가 협상에 응하지 않을 경우, 공격자는 수십 개의 임의 메일 계정을 동원해 사내 직원들에게 스팸성 협박 메일을 쏟아내거나 임원진에게 음성 메시지를 남기는 등 공격적인 압박 전술로 전환한다.
+데이터 확보를 마친 공격자는 탈취한 정보를 BlackFile {% include wiki_link.html text="DLS(Data Leak Site)" url="/review/Detailed/DLS" %} 에 게시하겠다고 협박한다. 초기 랜섬 노트는 자동 생성된 일반 Gmail 계정을 통해 발송되며, 내부에는 협박 협상을 위한 익명 메신저(Tox 또는 Session) ID가 포함되어 있다. 만약 피해자가 협상에 응하지 않을 경우, 공격자는 수십 개의 임의 메일 계정을 동원해 사내 직원들에게 스팸성 협박 메일을 쏟아내거나 임원진에게 음성 메시지를 남기는 등 공격적인 압박 전술로 전환한다.
 
 # [MITRE ATT&CK Mapping]
 ## Initial Access
-* Vishing - [T1566.004](https://attack.mitre.org/techniques/T1566/004/)
-* Impersonation - [T1684.001](https://attack.mitre.org/techniques/T1684/001/)
+* **Phishing: Spearphishing Voice** - [T1566.004](https://attack.mitre.org/techniques/T1566/004/)
+* **Social Engineering: Impersonation** - [T1684.001](https://attack.mitre.org/techniques/T1684/001/)
 
 ## Credential Access & Defense Evasion
-* Adversary-in-the-Middle - [T1557](https://attack.mitre.org/techniques/T1557/)
-* Masquerading - [T1036](https://attack.mitre.org/techniques/T1036/)
+* **Adversary-in-the-Middle** - [T1557](https://attack.mitre.org/techniques/T1557/)
+* **Masquerading** - [T1036](https://attack.mitre.org/techniques/T1036/)
 
 ## Persistence
-* Account Manipulation: Device Registration - [T1098.005](https://attack.mitre.org/techniques/T1098/005/)
-* Valid Accounts: Cloud Accounts - [T1078.004](https://attack.mitre.org/techniques/T1078/004/)
+* **Account Manipulation: Device Registration** - [T1098.005](https://attack.mitre.org/techniques/T1098/005/)
+* **Valid Accounts: Cloud Accounts** - [T1078.004](https://attack.mitre.org/techniques/T1078/004/)
 
 ## Collection
-* Data from Information Repositories: SharePoint - [T1213.002](https://attack.mitre.org/techniques/T1213/002/)
+* **Data from Information Repositories: SharePoint** - [T1213.002](https://attack.mitre.org/techniques/T1213/002/)
 
 ## Exfiltration
-* Automated Exfiltration - [T1020](https://attack.mitre.org/techniques/T1020/)
+* **Automated Exfiltration** - [T1020](https://attack.mitre.org/techniques/T1020/)
 
 ## Impact
-* Financial Theft - [T1657](https://attack.mitre.org/techniques/T1657/)
+* **Financial Theft** - [T1657](https://attack.mitre.org/techniques/T1657/)
 
 # [Defense Strategies]
 
