@@ -23,12 +23,10 @@ Microsoft 365 UAL은 SharePoint Online, OneDrive for Business, Exchange Online, 
 UAL 분석 시 침해 사고의 단서를 제공하는 주요 오퍼레이션과 필드는 다음과 같다.
 
 * **`FileDownloaded` 및 `FileAccessed` (SharePoint / OneDrive)**
-    
     사용자가 파일을 로컬로 다운로드했거나 웹상에서 열람한 행위를 기록한다. 공격자가 대량의 문서를 탈취할 때 발생하는 대량의 `FileDownloaded` 이벤트를 정밀 분석하여 유출 범위를 특정한다.
 
 
 * **`MailItemsAccessed` (Exchange Online)**
-    
     특정 메일 상자(Mailbox)의 메시지를 읽었을 때 기록되는 고가치 이벤트이다. 비즈니스 이메일 침해(BEC) 공격자가 타깃의 메일 본문이나 첨부파일을 훔쳐봤는지 여부를 입증하는 직접적인 증거로 쓰인다.
 
 
