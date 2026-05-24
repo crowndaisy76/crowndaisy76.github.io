@@ -7,5 +7,7 @@ theme: jekyll-theme-cayman
 collections:
   tech_posts:
     output: true
+    permalink: /tech/:path/
   review_posts:
     output: true
+    permalink: /review/:path/
