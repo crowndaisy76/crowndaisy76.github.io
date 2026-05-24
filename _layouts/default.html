@@ -28,14 +28,27 @@
         }
         .wiki-link-wrapper:hover .wiki-preview { display: block; }
 
-        /* 우측 슬라이드 창 (Drawer) 스타일 */
+        /* 우측 슬라이드 창 (Drawer) 기본 구조 */
         .wiki-drawer {
-            position: fixed; top: 0; right: -550px; width: 500px; height: 100%;
+            position: fixed; top: 0; right: 0; width: 500px; height: 100%;
             background: white; box-shadow: -5px 0 25px rgba(0,0,0,0.15);
-            transition: right 0.3s ease-in-out; z-index: 2000; padding: 2.5rem 2rem;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out; z-index: 2000; padding: 2.5rem 2rem;
             box-sizing: border-box; overflow-y: auto;
         }
-        .wiki-drawer.open { right: 0; }
+        .wiki-drawer.open { transform: translateX(0); }
+        /* 드래그 크기 조절 중일 때는 트랜지션을 꺼야 마우스를 실시간으로 부드럽게 따라옴 */
+        .wiki-drawer.resizing { transition: none; }
+        
+        /* 드래그 크기 조절 바 (Resizer) */
+        .drawer-resizer {
+            position: absolute; top: 0; left: 0; width: 8px; height: 100%;
+            cursor: ew-resize; background: transparent; transition: background 0.2s;
+        }
+        .drawer-resizer:hover, .wiki-drawer.resizing .drawer-resizer {
+            background: rgba(0, 91, 181, 0.2); border-left: 1px solid #005bb5;
+        }
+
         .wiki-drawer-close {
             position: absolute; top: 1rem; right: 1rem; background: none; border: none;
             font-size: 1.8rem; cursor: pointer; color: #aaa; transition: 0.2s;
@@ -68,6 +81,7 @@
 
 <div id="drawerOverlay" class="drawer-overlay" onclick="closeWikiDrawer()"></div>
 <div id="wikiDrawer" class="wiki-drawer">
+    <div class="drawer-resizer" id="drawerResizer"></div>
     <button class="wiki-drawer-close" onclick="closeWikiDrawer()">&times;</button>
     <div id="drawerContent" class="wiki-drawer-content">
         <p>문서를 불러오는 중입니다...</p>
@@ -79,7 +93,6 @@ function openWikiDrawer(event, element) {
     event.preventDefault(); // 페이지 이동 차단
     let url = element.getAttribute('href');
     
-    // 만약 URL 끝에 .md나 .md/가 붙어있다면 자동으로 깔끔하게 제거
     if (url.endsWith('.md')) {
         url = url.slice(0, -3);
     } else if (url.endsWith('.md/')) {
@@ -94,14 +107,12 @@ function openWikiDrawer(event, element) {
     drawer.classList.add('open');
     overlay.classList.add('open');
     
-    // 비동기(Fetch)로 Detailed 페이지 데이터 요청
     fetch(url)
         .then(response => {
             if (!response.ok) throw new Error('상세 개념 문서(HTML)를 찾을 수 없습니다.');
             return response.text();
         })
         .then(html => {
-            // 읽어온 페이지 전체 내용 중 본문 컴포넌트(.container) 내부만 파싱하여 주입
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             const targetContent = doc.querySelector('.container');
@@ -121,6 +132,34 @@ function openWikiDrawer(event, element) {
 function closeWikiDrawer() {
     document.getElementById('wikiDrawer').classList.remove('open');
     document.getElementById('drawerOverlay').classList.remove('open');
+}
+
+// --- 드래그 크기 조절(Resize) 구현부 ---
+const drawer = document.getElementById('wikiDrawer');
+const resizer = document.getElementById('drawerResizer');
+
+resizer.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    drawer.classList.add('resizing'); // 실시간 반영을 위해 트랜지션 클래스 제거
+    
+    window.addEventListener('mousemove', resizeDrawer);
+    window.addEventListener('mouseup', stopResizeDrawer);
+});
+
+function resizeDrawer(e) {
+    // 화면 우측 끝에서 마우스 커서까지의 거리를 계산하여 너비로 설정
+    let newWidth = window.innerWidth - e.clientX;
+    
+    // 최소 350px, 최대 전체 화면의 85% 까지만 늘어나도록 마지노선 설정
+    if (newWidth > 350 && newWidth < window.innerWidth * 0.85) {
+        drawer.style.width = newWidth + 'px';
+    }
+}
+
+function stopResizeDrawer() {
+    drawer.classList.remove('resizing');
+    window.removeEventListener('mousemove', resizeDrawer);
+    window.removeEventListener('mouseup', stopResizeDrawer);
 }
 </script>
 </body>
