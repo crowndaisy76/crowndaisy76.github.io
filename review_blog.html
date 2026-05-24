@@ -5,7 +5,7 @@ layout: null
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>한희수 - 기술 블로그</title>
+    <title>한희수 - 리뷰 블로그</title>
     <style>
         body { font-family: 'Pretendard', sans-serif; background: #f8f9fa; margin: 0; padding: 0; }
         header { background: #2c3e50; color: white; padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
@@ -28,8 +28,8 @@ layout: null
     </nav>
 </header>
 <div class="container">
-    <h1>기술 블로그</h1>
-    {% for post in site.tech_posts %}
+    <h1>리뷰 블로그</h1>
+    {% for post in site.review_posts %}
     <div class="post-card" onclick="location.href='{{ post.url }}'">
         <h2>{{ post.title }}</h2>
         <div class="date">{{ post.date | date: "%Y-%m-%d" }}</div>
