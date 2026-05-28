@@ -29,7 +29,8 @@ layout: null
 </header>
 <div class="container">
     <h1>리뷰 블로그</h1>
-    {% for post in site.review_posts %}
+    {% assign sorted_review_posts = site.review_posts | sort: "date" | reverse %}
+    {% for post in sorted_review_posts %}
       {% if post.path contains 'Review/' %}
       <div class="post-card" onclick="location.href='{{ site.baseurl }}{{ post.url }}'">
           <h2>{{ post.title }}</h2>
