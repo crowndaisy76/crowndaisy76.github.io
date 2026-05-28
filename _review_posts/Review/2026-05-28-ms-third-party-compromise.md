@@ -8,9 +8,9 @@ date: 2026-05-28
 
 본 사건은 신뢰 관계가 구축된 외부 파트너사의 자산 침해로부터 시작된 고도화된 공급망 및 내부망 침투 사례이다.
 
-공격자는 탐지 시그니처가 발생하는 전형적인 악성코드나 취약점을 사용하는 대신, 타깃 조직이 이미 환경 내에서 정식 서명하고 신뢰하던 엔터프라이즈 관리 도구인 {% include wiki_link.html text="HPE Operations Agent(HPE OA)" url="/review/Detailed/OA" %}를 전면에 악용하였다. 이를 통해 공격자는 정상적인 관리자 업무 흐름으로 위장하여 초기 보안 탐지망을 완벽히 우회하였다.
+공격자는 탐지 시그니처가 발생하는 전형적인 악성코드나 취약점을 사용하는 대신, 타깃 조직이 이미 환경 내에서 정식 서명하고 신뢰하던 엔터프라이즈 관리 도구인 {% include wiki_link.html text="HPE Operations Agent(HPE OA)" url="/review/Details/OA" %}를 전면에 악용하였다. 이를 통해 공격자는 정상적인 관리자 업무 흐름으로 위장하여 초기 보안 탐지망을 완벽히 우회하였다.
 
-이후 도메인 인프라를 장악한 공격자는 Windows 인증 프로세스의 아키텍처 구조를 악용하여 악성 {% include wiki_link.html text="네트워크 프로바이더" url="/review/Detailed/Network_Provider" %} 및 {% include wiki_link.html text="패스워드 필터" url="/review/Detailed/Password_Filter" %}를 등록하는 정교한 자격 증명 가로채기 기법을 전개하였다. 이를 통해 일반 텍스트 형태의 사용자 자격 증명과 패스워드 변경 이벤트를 실시간으로 수집하였으며, 확보한 고권한 계정을 교두보 삼아 내부 핵심 인프라 전반에 걸쳐 은밀한 횡적 이동과 장기적인 지속성을 확립하였다.
+이후 도메인 인프라를 장악한 공격자는 Windows 인증 프로세스의 아키텍처 구조를 악용하여 악성 {% include wiki_link.html text="네트워크 프로바이더" url="/review/Details/Network_Provider" %} 및 {% include wiki_link.html text="패스워드 필터" url="/review/Details/Password_Filter" %}를 등록하는 정교한 자격 증명 가로채기 기법을 전개하였다. 이를 통해 일반 텍스트 형태의 사용자 자격 증명과 패스워드 변경 이벤트를 실시간으로 수집하였으며, 확보한 고권한 계정을 교두보 삼아 내부 핵심 인프라 전반에 걸쳐 은밀한 횡적 이동과 장기적인 지속성을 확립하였다.
 
 
 # [Technical Analysis]
@@ -25,7 +25,7 @@ date: 2026-05-28
 
 ## 2. Credential Access & Exfiltration
 
-공격자는 최초 침투 성공 후, 도메인 내 고권한 계정을 지속적으로 확보하기 위해 {% include wiki_link.html text="도메인 컨트롤러" url="/review/Detailed/Domain_Controller" %}를 대상으로 윈도우의 내부 인증 프로세스 자체를 변조하는 고도화된 자격 증명 가로채기 전술을 전개하였다.
+공격자는 최초 침투 성공 후, 도메인 내 고권한 계정을 지속적으로 확보하기 위해 {% include wiki_link.html text="도메인 컨트롤러" url="/review/Details/Domain_Controller" %}를 대상으로 윈도우의 내부 인증 프로세스 자체를 변조하는 고도화된 자격 증명 가로채기 전술을 전개하였다.
 
 ### 네트워크 프로바이더(Network Provider) 하이재킹
 
