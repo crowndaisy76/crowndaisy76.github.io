@@ -38,7 +38,11 @@ date: 2026-05-28
 ### 유출 모듈(msupdate.dll)과의 연계
 
 공격자는 패스워드 필터와 상호작용하며 데이터를 외부로 유출하는 별도의 모듈인 msupdate.dll을 DC01과 DC02에 생성하고 파워쉘을 통해 실행하였다. 실행 시에는 다음 명령어를 사용하였다.
-```start powershell.exe -c "[System.Reflection.Assembly]::LoadFrom('C:\Windows\System32\Com\msupdate.dll'); [WindowsHook.Program]::Main('msupdate')"```
+
+```powershell
+start powershell.exe -c "[System.Reflection.Assembly]::LoadFrom('C:\Windows\System32\Com\msupdate.dll'); [WindowsHook.Program]::Main('msupdate')"
+```
+
 해당 모듈은 이중 암호화된 Ipd 파일의 내용을 읽어 들인 뒤 두 가지 경로로 유출을 시도하였다. 내부망에서는 SMB 프로토콜을 통해 원격 공유 폴더로 데이터를 전송하며 이미지 파일인 icon02.jpeg로 확장자를 위장하여 적재했다. 동시에 내부 환경 설정 파일에서 추출한 자격 증명을 이용해 지정된 SMTP 서버로 "Update Service"라는 제목의 이메일을 발송하는 방식으로 자격 증명을 외부로 최종 유출하였다.
 
 ## 3. Execution & Persistence
