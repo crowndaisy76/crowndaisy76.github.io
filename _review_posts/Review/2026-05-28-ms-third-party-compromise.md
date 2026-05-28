@@ -78,8 +78,57 @@ start powershell.exe -c "[System.Reflection.Assembly]::LoadFrom('C:\Windows\Syst
 
 # [MITRE ATT&CK Mapping]
 
+## Initial Access
+
+* **Trusted Relationship** - [T1199](https://attack.mitre.org/techniques/T1199/)
+
+## Execution
+
+* **Command and Scripting Interpreter: PowerShell** - [T1059.001](https://attack.mitre.org/techniques/T1059/001/)
+* **Command and Scripting Interpreter: Visual Basic** - [T1059.005](https://attack.mitre.org/techniques/T1059/005/)
+* **Windows Management Instrumentation** - [T1047](https://attack.mitre.org/techniques/T1047/)
+
+## Persistence
+
+* **Modify Registry** - [T1112](https://attack.mitre.org/techniques/T1112/)
+* **Server Software Component: Web Shell** - [T1505.003](https://attack.mitre.org/techniques/T1505/003/)
+* **Modify Authentication Process: Password Filter** - [T1556.002](https://attack.mitre.org/techniques/T1556/002/)
+
+## Credential Access
+
+* **Modify Authentication Process** - [T1556](https://attack.mitre.org/techniques/T1556/)
+* **Credentials from Password Stores** - [T1555](https://attack.mitre.org/techniques/T1555/)
+
+## Discovery
+
+* **System Network Configuration Discovery** - [T1016](https://attack.mitre.org/techniques/T1016/)
+* **Remote System Discovery / Account Discovery** - [T1018](https://attack.mitre.org/techniques/T1018/) / [T1087](https://attack.mitre.org/techniques/T1087/)
+
+## Lateral Movement
+
+* **Remote Services: Remote Desktop Protocol** - [T1021.001](https://attack.mitre.org/techniques/T1021/001/)
+
+## Command and Control
+
+* **Protocol Tunneling** - [T1572](https://attack.mitre.org/techniques/T1572/)
+
+## Exfiltration
+
+* **Exfiltration Over Alternative Protocol** - [T1048](https://attack.mitre.org/techniques/T1048/)
 
 # [Defense Strategies]
+
+## 엔드포인트 보호 및 가시성 강화
+
+급변하는 공격 도구와 기법에 대응하기 위해 안티바이러스의 클라우드 기반 보호 기능을 활성화하여 알려지지 않은 변종 위협을 사전에 차단해야 한다. 또한 모든 엔드포인트 자산에 EDR을 배포하여 시스템 전반의 가시성을 확보하고 악의적인 활동에 대한 탐지와 대응 속도를 극대화해야 한다.
+
+## 네트워크 통제 및 공격 표면 최소화
+
+서버가 명시적으로 승인된 아웃바운드 트래픽만 허용하도록 기본 거부 형태의 Egress 필터링 모델을 도입하여, 악성 인프라와의 통신 및 데이터 외부 반출 시도를 원천 차단해야 한다. 이와 함께 시스템 내에 방치된 불필요한 소프트웨어와 관리 도구를 제거하여 공격자가 위장 수단으로 악용할 수 있는 공격 표면을 근본적으로 축소해야 한다.
+
+## 모니터링 고도화 및 접근 제어 아키텍처 구현
+
+웹 서버에 대한 상세한 로깅을 활성화하여 예상치 못한 파일 변경이나 의심스러운 웹 요청 등의 이상 징후를 상시 감시해야 한다. 동시에 엔터프라이즈 액세스 모델을 도입하여 무분별한 권한 상승을 억제하고 인프라 전반에 걸쳐 강력한 접근 통제를 강제해야 한다. 마지막으로 침해 사고 조사 과정에서 식별된 탐지 및 운영상의 사각지대를 즉각적으로 보완하여 SOC의 대응 역량을 한층 더 강화해야 한다.
 
 
 # [Referenced]
