@@ -40,15 +40,18 @@ msvcrt58.sqt 모듈은 이 대상 프로세스들이 네트워크 통신을 시�
 ## Initial Access
 
 * **Phishing: Spearphishing Attachment** - [T1566.001](https://attack.mitre.org/techniques/T1566/001/)
+    
     표적 인물들을 대상으로 악성 오피스 문서가 첨부된 스피어 피싱 이메일을 개별 발송하여 진입함.
 
 ## Execution
 
 * **System Binary Proxy Execution: Rundll32** - [T1218.011](https://attack.mitre.org/techniques/T1218/011/)
+    
     초기 침투 후 작업 디렉터리에 복사한 정상 rundll32.exe를 이용하여 코어 컨트롤러인 updater.mod를 대리 실행함.
 
 
 * **Command and Scripting Interpreter: Windows Command Shell** - [T1059.003](https://attack.mitre.org/techniques/T1059/003/)
+    
     dfrgntfs5.sqt 모듈에 탑재된 임의 프로세스 실행 및 로그 수집 명령을 통해 시스템 명령어를 실행함.
 
 
@@ -56,6 +59,7 @@ msvcrt58.sqt 모듈은 이 대상 프로세스들이 네트워크 통신을 시�
 ## Persistence
 
 * **Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder** - [T1547.001](https://attack.mitre.org/techniques/T1547/001/)
+    
     시스템 재부팅 후에도 프레임워크가 자동 실행되도록 시작프로그램 폴더에 악성 링크 파일을 생성함.
 
 
@@ -63,44 +67,54 @@ msvcrt58.sqt 모듈은 이 대상 프로세스들이 네트워크 통신을 시�
 ## Defense Evasion
 
 * **Masquerading** - [T1036](https://attack.mitre.org/techniques/T1036/)
+    
     악성 모듈의 이름을 dfrgntfs5.sqt(디스크 조각모음 위장) 또는 msvcrt58.sqt(런타임 라이브러리 위장)로 명명하고, 정상 rundll32.exe를 무관한 임시 폴더로 이동시켜 실행함으로써 탐지를 우회함.
 
 
 * **Obfuscated Files or Information** - [T1027](https://attack.mitre.org/techniques/T1027/)
+    
     C2 자격 증명 및 프레임워크 설정 정보가 담긴 레지스트리 구성 파일 데이터를 독자적인 알고리즘으로 이중 암호화하여 은닉함.
 
 
 * **Process Injection: Dynamic-link Library Injection** - [T1055.001](https://attack.mitre.org/techniques/T1055/001/)
+    
     키로깅을 위해 `SetWindowsHookExW` API를 호출하여 활성화된 프로세스들에 glue30.dll을 주입하고, C2 명령에 따라 익스플로러 및 LSASS 프로세스에 악성 쉘코드를 인젝션함.
 
 ## Credential Access
 
 * **Input Capture: Keylogging** - [T1056.001](https://attack.mitre.org/techniques/T1056/001/)
+    
     윈도우 훅 메커니즘을 이용해 주입된 glue30.dll 모듈을 통해 전사적인 키보드 입력 값을 실시간으로 가로챔.
 
 * **Credentials from Password Stores** - [T1555](https://attack.mitre.org/techniques/T1555/)
-* PWDDUMP 명령을 가동하여 아웃룩 익스프레스, 인터넷 익스플로러, 윈도우 라이브 메일 등 로컬 저장소에 보관된 자격 증명을 복호화하여 추출함.
+    
+    PWDDUMP 명령을 가동하여 아웃룩 익스프레스, 인터넷 익스플로러, 윈도우 라이브 메일 등 로컬 저장소에 보관된 자격 증명을 복호화하여 추출함.
 
 
 * **Network Sniffing** - [T1040](https://attack.mitre.org/techniques/T1040/)
+    
     msvcrt58.sqt 모듈이 윈도우 소켓 라이브러리(ws2_32.dll)의 주요 통신 API들을 후킹하여 평문 POP3 이메일 트래픽을 네트워크 레벨에서 가로챔.
 
 
 ## Discovery
 
 * **Query Registry** - [T1012](https://attack.mitre.org/techniques/T1012/)
+    
     REGDUMP 명령을 통해 시스템 레지스트리에 저장된 내부 설정 및 중요 정보를 수집함.
 
 
 * **System Information Discovery** - [T1082](https://attack.mitre.org/techniques/T1082/)
+    
     SYSINFO 명령을 실행하여 감염된 호스트의 상세한 하드웨어 및 운영체제 명세를 정찰함.
 
 
 * **File and Directory Discovery** - [T1083](https://attack.mitre.org/techniques/T1083/)
+    
     특정 디렉터리의 파일 목록을 확보하는 T 명령 및 정의된 특정 파일 패턴을 자동 추적하는 기능을 수행함.
 
 
 * **System Network Configuration Discovery** - [T1016](https://attack.mitre.org/techniques/T1016/)
+    
     초기 침투 단계의 abc003.vbs 스크립트 및 SCAN 명령을 통해 로컬 네트워크 토폴로지와 외부 IP 주소를 식별함.
 
 
@@ -108,10 +122,12 @@ msvcrt58.sqt 모듈은 이 대상 프로세스들이 네트워크 통신을 시�
 ## Exfiltration
 
 * **Exfiltration Over Web Service: Exfiltration Over Cloud Storage** - [T1567.002](https://attack.mitre.org/techniques/T1567/002/)
+   
    수집된 모든 민감 데이터를 합법적인 외부 클라우드 스토리지 서비스인 mydrive.ch 인프라로 유출함.
 
 
 * **Exfiltration Over C2 Channel** - [T1041](https://attack.mitre.org/techniques/T1041/)
+    
     모듈에서 탈취한 이메일 자격 증명과 키로그 파일들을 코어 컨트롤러인 updater.mod의 독자적인 대기열 제어 시스템을 통해 C2 통신 채널로 반출함.
 
 
