@@ -145,9 +145,5 @@ msvcrt58.sqt 모듈은 이 대상 프로세스들이 네트워크 통신을 시�
     모듈에서 탈취한 이메일 자격 증명과 키로그 파일들을 코어 컨트롤러인 updater.mod의 독자적인 대기열 제어 시스템을 통해 C2 통신 채널로 반출함.
 
 
-
-# [Defense Strategies]
-
-
 # [Referenced]
-* []
+* [SecureList](https://securelist.com/darkuniverse-the-mysterious-apt-framework-27/94897/)
