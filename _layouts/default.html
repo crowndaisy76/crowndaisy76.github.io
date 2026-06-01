@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ page.title }} - 한희수</title>
+    
+    <!-- Highlight.js 스타일 (Notion 테마와 유사한 atom-one-light 적용) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+    
     <style>
         body { font-family: 'Pretendard', sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; margin: 0; padding: 0; overflow-x: hidden; }
         header { background: #2c3e50; color: white; padding: 1rem 0; text-align: center; position: sticky; top: 0; z-index: 1000; }
@@ -22,19 +26,26 @@
             border: 1px solid #e9ecef;
         }
         
-        /* 코드 블록 스타일 */
-        pre { display: block; background: #2c3e50; color: white; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+        /* 코드 블록 스타일 (Notion 스타일로 개선) */
+        pre { 
+            display: block; 
+            background: #f7f7f9; 
+            padding: 1rem; 
+            border-radius: 6px; 
+            border: 1px solid #e1e4e8;
+            overflow-x: auto; 
+        }
         
-        /* 코드 블록 내부의 code 태그는 인라인 스타일을 무시하도록 설정 */
         pre code {
             background-color: transparent;
             color: inherit;
             border: none;
             padding: 0;
-            font-size: 1em;
+            font-size: 0.9em;
+            font-family: 'Consolas', 'Monaco', monospace;
         }
         
-        /* [1] 일반 외부 하이퍼링크 스타일 (Wiki-Link 제외) */
+        /* 일반 외부 하이퍼링크 스타일 */
         .container a:not(.wiki-link-text) {
             color: #e67e22;
             text-decoration: none;
@@ -46,7 +57,7 @@
             border-bottom-color: #d35400;
         }
 
-        /* [2] Wiki-Link 툴팁 스타일 */
+        /* Wiki-Link 툴팁 스타일 */
         .wiki-link-wrapper { position: relative; display: inline-block; }
         .wiki-link-text { color: #005bb5 !important; text-decoration: none !important; font-weight: bold; border-bottom: 1px dashed #005bb5 !important; padding: 0 2px; cursor: pointer; }
         .wiki-link-text:hover { color: #003a75 !important; border-bottom-style: solid !important; }
@@ -61,7 +72,7 @@
         }
         .wiki-link-wrapper:hover .wiki-preview { display: block; }
 
-        /* 우측 슬라이드 창 (Drawer) 기본 구조 */
+        /* 우측 슬라이드 창 (Drawer) */
         .wiki-drawer {
             position: fixed; top: 0; right: 0; width: 500px; height: 100%;
             background: white; box-shadow: -5px 0 25px rgba(0,0,0,0.15);
@@ -71,43 +82,21 @@
         }
         .wiki-drawer.open { transform: translateX(0); }
         .wiki-drawer.resizing { transition: none; }
-        
-        /* 드래그 크기 조절 바 (Resizer) */
         .drawer-resizer {
             position: absolute; top: 0; left: 0; width: 8px; height: 100%;
             cursor: ew-resize; background: transparent; transition: background 0.2s;
         }
-        .drawer-resizer:hover, .wiki-drawer.resizing .drawer-resizer {
-            background: rgba(0, 91, 181, 0.2); border-left: 1px solid #005bb5;
-        }
-
-        .wiki-drawer-close {
-            position: absolute; top: 1rem; right: 1rem; background: none; border: none;
-            font-size: 1.8rem; cursor: pointer; color: #aaa; transition: 0.2s;
-        }
-        .wiki-drawer-close:hover { color: #333; }
+        .drawer-resizer:hover { background: rgba(0, 91, 181, 0.2); border-left: 1px solid #005bb5; }
+        .wiki-drawer-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #aaa; }
         .wiki-drawer-content { margin-top: 1rem; }
-        .wiki-drawer-content h1, .wiki-drawer-content h2 { border-bottom: 1px solid #ddd; padding-bottom: 8px; }
         
-        /* 뒷배경 오버레이 */
         .drawer-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4); display: none; z-index: 1999;
-            backdrop-filter: blur(2px);
+            background: rgba(0, 0, 0, 0.4); display: none; z-index: 1999; backdrop-filter: blur(2px);
         }
         .drawer-overlay.open { display: block; }
 
-        /* 리스트 내부의 굵은 글씨(제목) 뒤에 오는 텍스트를 강제로 다음 줄로 내림 */
-        .container li strong {
-            display: inline-block;
-            margin-bottom: 5px;
-        }
-
-        /* 리스트 내부의 일반 텍스트나 br 태그가 정상 동작하도록 설정 */
-        .container li {
-            margin-bottom: 15px;
-            line-height: 1.7;
-        }
+        .container li { margin-bottom: 15px; line-height: 1.7; }
     </style>
 </head>
 <body>
@@ -132,46 +121,46 @@
     </div>
 </div>
 
+<!-- Highlight.js 스크립트 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
 <script>
+// 하이라이팅 적용 함수
+function initHighlighting() {
+    hljs.highlightAll();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    initHighlighting();
+    applyExternalLinks();
+});
+
 function openWikiDrawer(event, element) {
     event.preventDefault(); 
     let url = element.getAttribute('href');
-    
-    if (url.endsWith('.md')) {
-        url = url.slice(0, -3);
-    } else if (url.endsWith('.md/')) {
-        url = url.slice(0, -4);
-    }
+    if (url.endsWith('.md')) url = url.slice(0, -3);
+    else if (url.endsWith('.md/')) url = url.slice(0, -4);
     
     const drawer = document.getElementById('wikiDrawer');
     const overlay = document.getElementById('drawerOverlay');
     const contentDiv = document.getElementById('drawerContent');
     
-    contentDiv.innerHTML = '<p style="color: #666;">문서를 불러오는 중입니다...</p>';
+    contentDiv.innerHTML = '<p>문서를 불러오는 중입니다...</p>';
     drawer.classList.add('open');
     overlay.classList.add('open');
     
     fetch(url)
-        .then(response => {
-            if (!response.ok) throw new Error('상세 개념 문서(HTML)를 찾을 수 없습니다.');
-            return response.text();
-        })
+        .then(response => response.ok ? response.text() : Promise.reject('문서 로드 실패'))
         .then(html => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             const targetContent = doc.querySelector('.container');
+            contentDiv.innerHTML = targetContent ? targetContent.innerHTML : html;
             
-            if (targetContent) {
-                contentDiv.innerHTML = targetContent.innerHTML;
-            } else {
-                contentDiv.innerHTML = html; 
-            }
-            // 슬라이드 내부에 로드된 일반 링크들도 새 탭 처리를 위해 재검사
+            initHighlighting(); // 슬라이드 창 내부 코드에도 하이라이팅 적용
             applyExternalLinks();
         })
-        .catch(error => {
-            contentDiv.innerHTML = `<p style="color:#d9534f; font-weight:bold;">오류: ${error.message}</p>`;
-        });
+        .catch(error => { contentDiv.innerHTML = `<p style="color:red;">오류: ${error}</p>`; });
 }
 
 function closeWikiDrawer() {
@@ -179,7 +168,6 @@ function closeWikiDrawer() {
     document.getElementById('drawerOverlay').classList.remove('open');
 }
 
-// --- 외부 하이퍼링크 새 탭 열기 자동화 로직 ---
 function applyExternalLinks() {
     document.querySelectorAll('.container a:not(.wiki-link-text)').forEach(link => {
         if (link.hostname !== window.location.hostname && link.hostname !== '') {
@@ -189,31 +177,21 @@ function applyExternalLinks() {
     });
 }
 
-// 문서 로드 완료 시 1회 실행
-document.addEventListener("DOMContentLoaded", applyExternalLinks);
-
-// --- 드래그 크기 조절(Resize) ---
+// 드래그 리사이즈
 const drawer = document.getElementById('wikiDrawer');
 const resizer = document.getElementById('drawerResizer');
-
-resizer.addEventListener('mousedown', function(e) {
+resizer.addEventListener('mousedown', (e) => {
     e.preventDefault();
-    drawer.classList.add('resizing');
-    window.addEventListener('mousemove', resizeDrawer);
-    window.addEventListener('mouseup', stopResizeDrawer);
+    window.addEventListener('mousemove', resize);
+    window.addEventListener('mouseup', stopResize);
 });
-
-function resizeDrawer(e) {
+function resize(e) {
     let newWidth = window.innerWidth - e.clientX;
-    if (newWidth > 350 && newWidth < window.innerWidth * 0.85) {
-        drawer.style.width = newWidth + 'px';
-    }
+    if (newWidth > 350 && newWidth < window.innerWidth * 0.85) drawer.style.width = newWidth + 'px';
 }
-
-function stopResizeDrawer() {
-    drawer.classList.remove('resizing');
-    window.removeEventListener('mousemove', resizeDrawer);
-    window.removeEventListener('mouseup', stopResizeDrawer);
+function stopResize() {
+    window.removeEventListener('mousemove', resize);
+    window.removeEventListener('mouseup', stopResize);
 }
 </script>
 </body>
