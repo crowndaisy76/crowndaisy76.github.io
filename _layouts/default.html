@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>{{ page.title }} - 한희수</title>
     
-    <!-- Highlight.js 스타일 (Notion 테마와 유사한 atom-one-light 적용) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
     
     <style>
@@ -13,6 +12,9 @@
         nav { display: flex; justify-content: center; gap: 2rem; }
         nav a { color: white; text-decoration: none; font-weight: bold; }
         .container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        
+        /* scroll-margin 추가: 상단 메뉴바에 앵커 타이틀이 가려지는 현상 방지 */
+        h1, h2, h3 { scroll-margin-top: 80px; }
         h1, h2 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         
         /* 인라인 코드 스타일 */
@@ -27,23 +29,8 @@
         }
         
         /* 코드 블록 스타일 (Notion 스타일로 개선) */
-        pre { 
-            display: block; 
-            background: #f7f7f9; 
-            padding: 1rem; 
-            border-radius: 6px; 
-            border: 1px solid #e1e4e8;
-            overflow-x: auto; 
-        }
-        
-        pre code {
-            background-color: transparent;
-            color: inherit;
-            border: none;
-            padding: 0;
-            font-size: 0.9em;
-            font-family: 'Consolas', 'Monaco', monospace;
-        }
+        pre { display: block; background: #f7f7f9; padding: 1rem; border-radius: 6px; border: 1px solid #e1e4e8; overflow-x: auto; }
+        pre code { background-color: transparent; color: inherit; border: none; padding: 0; font-size: 0.9em; font-family: 'Consolas', 'Monaco', monospace; }
         
         /* 일반 외부 하이퍼링크 스타일 */
         .container a:not(.wiki-link-text) {
@@ -62,19 +49,22 @@
         .wiki-link-text { color: #005bb5 !important; text-decoration: none !important; font-weight: bold; border-bottom: 1px dashed #005bb5 !important; padding: 0 2px; cursor: pointer; }
         .wiki-link-text:hover { color: #003a75 !important; border-bottom-style: solid !important; }
         .wiki-preview {
-            display: none; position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
+            display: none;
+            position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
             width: max-content; max-width: 250px; padding: 8px 12px; background: #2c3e50; color: #fff;
             border-radius: 6px; font-size: 0.85rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100;
         }
         .wiki-preview::after {
-            content: ''; position: absolute; top: 100%; left: 50%; margin-left: -5px;
+            content: '';
+            position: absolute; top: 100%; left: 50%; margin-left: -5px;
             border-width: 5px; border-style: solid; border-color: #2c3e50 transparent transparent transparent;
         }
         .wiki-link-wrapper:hover .wiki-preview { display: block; }
 
         /* 우측 슬라이드 창 (Drawer) */
         .wiki-drawer {
-            position: fixed; top: 0; right: 0; width: 500px; height: 100%;
+            position: fixed;
+            top: 0; right: 0; width: 500px; height: 100%;
             background: white; box-shadow: -5px 0 25px rgba(0,0,0,0.15);
             transform: translateX(100%);
             transition: transform 0.3s ease-in-out; z-index: 2000; padding: 2.5rem 2rem;
@@ -83,7 +73,8 @@
         .wiki-drawer.open { transform: translateX(0); }
         .wiki-drawer.resizing { transition: none; }
         .drawer-resizer {
-            position: absolute; top: 0; left: 0; width: 8px; height: 100%;
+            position: absolute;
+            top: 0; left: 0; width: 8px; height: 100%;
             cursor: ew-resize; background: transparent; transition: background 0.2s;
         }
         .drawer-resizer:hover { background: rgba(0, 91, 181, 0.2); border-left: 1px solid #005bb5; }
@@ -91,12 +82,59 @@
         .wiki-drawer-content { margin-top: 1rem; }
         
         .drawer-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.4); display: none; z-index: 1999; backdrop-filter: blur(2px);
         }
         .drawer-overlay.open { display: block; }
 
         .container li { margin-bottom: 15px; line-height: 1.7; }
+
+        /* ===== 새로 추가된 목차(TOC) 스타일 ===== */
+        .toc-wrapper {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 0.5rem 0 2.5rem 0;
+            border: 1px solid #e1e4e8;
+        }
+        .toc-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toc-title::before {
+            content: "📑";
+        }
+        .toc-list {
+            list-style: none;
+            padding-left: 0 !important;
+            margin: 0 !important;
+        }
+        .toc-list li {
+            margin-bottom: 8px !important;
+            line-height: 1.4 !important;
+        }
+        .toc-list a {
+            color: #495057 !important;
+            text-decoration: none !important;
+            border-bottom: none !important;
+            display: inline-block;
+            transition: color 0.2s;
+        }
+        .toc-list a:hover {
+            color: #005bb5 !important;
+            text-decoration: underline !important;
+        }
+        .toc-h1 { margin-left: 0; font-weight: bold; }
+        .toc-h2 { margin-left: 1.2rem; position: relative; }
+        .toc-h2::before { content: "•"; color: #adb5bd; position: absolute; left: -12px; }
+        .toc-h3 { margin-left: 2.4rem; font-size: 0.95em; color: #6c757d; position: relative; }
+        .toc-h3::before { content: "-"; color: #adb5bd; position: absolute; left: -10px; }
     </style>
 </head>
 <body>
@@ -108,7 +146,7 @@
         <a href="{{ site.baseurl }}/review_blog.html">리뷰 블로그</a>
     </nav>
 </header>
-<div class="container">
+<div class="container" id="post-container">
     {{ content }}
 </div>
 
@@ -121,7 +159,6 @@
     </div>
 </div>
 
-<!-- Highlight.js 스크립트 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
 <script>
@@ -130,17 +167,58 @@ function initHighlighting() {
     hljs.highlightAll();
 }
 
+// ===== 새로 추가된 자동 목차(TOC) 생성기 =====
+function generateTOC() {
+    const container = document.getElementById('post-container');
+    const headers = container.querySelectorAll('h1, h2, h3');
+    if (headers.length === 0) return;
+
+    const tocWrapper = document.createElement('div');
+    tocWrapper.className = 'toc-wrapper';
+    tocWrapper.innerHTML = '<div class="toc-title">목차</div><ul class="toc-list"></ul>';
+    const tocList = tocWrapper.querySelector('.toc-list');
+    
+    let hasValidHeader = false;
+
+    headers.forEach((header, index) => {
+        // 내용이 없는 헤더는 건너뛰기
+        if (!header.textContent.trim()) return;
+        hasValidHeader = true;
+
+        // 앵커 이동을 위한 id 부여
+        if (!header.id) {
+            header.id = 'heading-' + index;
+        }
+
+        const li = document.createElement('li');
+        li.className = 'toc-' + header.tagName.toLowerCase();
+        
+        const a = document.createElement('a');
+        a.href = '#' + header.id;
+        // 마크다운의 '[' 및 ']' 문자를 제거하여 깔끔한 목차 텍스트 생성
+        a.textContent = header.textContent.replace(/\[|\]/g, '').trim(); 
+        
+        li.appendChild(a);
+        tocList.appendChild(li);
+    });
+
+    // 헤더가 존재하면 컨테이너 최상단에 삽입
+    if (hasValidHeader) {
+        container.insertBefore(tocWrapper, container.firstChild);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     initHighlighting();
     applyExternalLinks();
+    generateTOC(); // 로드 완료 시 목차 자동 생성
 });
 
 function openWikiDrawer(event, element) {
-    event.preventDefault(); 
+    event.preventDefault();
     let url = element.getAttribute('href');
     if (url.endsWith('.md')) url = url.slice(0, -3);
     else if (url.endsWith('.md/')) url = url.slice(0, -4);
-    
     const drawer = document.getElementById('wikiDrawer');
     const overlay = document.getElementById('drawerOverlay');
     const contentDiv = document.getElementById('drawerContent');
@@ -148,7 +226,6 @@ function openWikiDrawer(event, element) {
     contentDiv.innerHTML = '<p>문서를 불러오는 중입니다...</p>';
     drawer.classList.add('open');
     overlay.classList.add('open');
-    
     fetch(url)
         .then(response => response.ok ? response.text() : Promise.reject('문서 로드 실패'))
         .then(html => {
