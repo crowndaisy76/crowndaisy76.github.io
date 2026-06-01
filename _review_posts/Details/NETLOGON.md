@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "NETLOGON"
-date: 2026-06-02
+date: 2026-06-01
 ---
 
 # [NETLOGON]
