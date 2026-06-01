@@ -3,6 +3,7 @@ description: CTI Analyst 및 Threat Hunter 한희수의 공간
 baseurl: ""
 url: "https://crowndaisy76.github.io"
 theme: jekyll-theme-cayman
+future: true
 
 collections:
   tech_posts:
