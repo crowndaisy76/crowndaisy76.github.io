@@ -31,10 +31,12 @@ layout: null
     <h1>기술 블로그</h1>
     {% assign sorted_tech_posts = site.tech_posts | sort: "date" | reverse %}
     {% for post in sorted_tech_posts %}
-    <div class="post-card" onclick="location.href='{{ post.url }}'">
-        <h2>{{ post.title }}</h2>
-        <div class="date">{{ post.date | date: "%Y-%m-%d" }}</div>
-    </div>
+      {% if post.path contains 'Tech/' %}
+      <div class="post-card" onclick="location.href='{{ site.baseurl }}{{ post.url }}'">
+          <h2>{{ post.title }}</h2>
+          <div class="date">{{ post.date | date: "%Y-%m-%d" }}</div>
+      </div>
+      {% endif %}
     {% endfor %}
 </div>
 </body>
